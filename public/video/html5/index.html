@@ -1,0 +1,74 @@
+<!-- http://0.0.0.0:8081/HTMLWebCam.html -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+<head>
+    <title>HTML5 Webcam experiment</title>
+    <style>
+        video { border: 1px solid #ccc; display: block; margin: 0 0 20px 0; }
+        #canvas { margin-top: 20px; border: 1px solid #ccc; display: block; }
+    </style>
+</head>
+
+<body>
+
+    <script type="text/javascript" src="js/recorder.js"> </script>
+
+    <video id="video" width="320" height="240" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="320" height="240"></canvas>
+
+    <script>
+        // Put event listeners into place
+        window.addEventListener("DOMContentLoaded", function() {
+            // Grab elements, create settings, etc.
+            var canvas = document.getElementById("canvas"),
+                    context = canvas.getContext("2d"),
+                    video = document.getElementById("video"),
+                    videoObj = { "audio": true, "video": true },
+                    errBack = function(error) {
+                        console.log("Video capture error: ", error.code);
+                    };
+
+            // Put video listeners into place
+            if(navigator.getUserMedia) { // Standard Chrome style
+                navigator.getUserMedia(videoObj, function(stream) {
+                    video.src = stream;
+                    video.play();
+                }, errBack);
+            } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+                navigator.webkitGetUserMedia(videoObj, function(stream){
+                    video.src = window.webkitURL.createObjectURL(stream);
+                    video.play();
+                    initWebRecorder(stream);
+                }, errBack);
+            }
+
+            // Trigger photo take
+            document.getElementById("snap").addEventListener("click", function() {
+                context.drawImage(video, 0, 0, 320, 240);
+            });
+        }, false);
+
+        var recorder;
+
+        function initWebRecorder(stream) {
+
+            var context;
+            if (typeof AudioContext !== "undefined") {
+                context = new AudioContext();
+            } else if (typeof webkitAudioContext !== "undefined") {
+                context = new webkitAudioContext();
+            } else {
+                throw new Error('AudioContext not supported. :(');
+            }
+
+            var mediaStreamSource = context.createMediaStreamSource(stream);
+            recorder = new Recorder(mediaStreamSource);
+            recorder.record();
+
+            alert('record');
+        }
+    </script>
+</body>
+</html>
