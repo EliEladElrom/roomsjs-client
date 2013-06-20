@@ -1,4 +1,4 @@
-# JavaScript Node.JS module for creating rooms and streaming data between front-end and back-end built to support different different transporters
+# JavaScript Node.JS module for creating rooms and streaming data between front-end and back-end built to support different transporters
 
 A Node.JS module, provides an object oriented wrapper for different transporters such as `socketio` for creating rooms and streaming data between users, streaming data from a database and even 3rd party services.
 `roomsjs`, `roomsdb` and `roomsjs-client` combine together a powerful light-weight backend/front-end libraries built to stream live data and solve same problems related to realtime communications, stream data from a database and even stream 3rd party APIs.
@@ -32,9 +32,9 @@ Example of front-end implementation of `socketcontroller`:
 
 Front-end dependencies: `jquery.js`, transporter such as `socket.io.js`
 
-Download complete front-end example from here see `public` folder: 
+Download complete front-end example from here see `public` folder:
 [https://github.com/EladElrom/roomsjs-client](https://github.com/EladElrom/roomsjs-client)
-      
+
 ## Example
 
 Back-end code to create the rooms services and connect to database and/or 3rd party APIs for streaming;
@@ -119,7 +119,7 @@ Example of streaming a pod consists of live camera feeds and text comment feed b
 
 ## Docs:
 
-Below is a ten thousand foot diagram that shows how the different pieces of the platform are coming together. 
+Below is a ten thousand foot diagram that shows how the different pieces of the platform are coming together.
 
 ![backend diagram](https://raw.github.com/EladElrom/poet/ei-pages/effectiveidea/public/images/roomsjs-diagram1.png)
 <br><br>
