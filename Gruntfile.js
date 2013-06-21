@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     ];
 
     Roomsjs = Roomsjs.map(function (p) {
-        return 'public/js/libs/' + p;
+        return 'client/js/libs/' + p;
     });
 
     grunt.initConfig({
