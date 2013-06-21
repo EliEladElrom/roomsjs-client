@@ -5,27 +5,24 @@ var os          = require('os'),
 
 // create express server if needed
 var express     = require('express'),
-    app         = express().use(express.static(__dirname + '/public'));
+    app         = express().use(express.static(__dirname + '/client'));
 
 // create server
 var server = require('http').createServer(app).listen(port, function () {
         console.log('Listening on http://' + os.hostname() + ':' + port);
     });
 
-var transporter = {
-    type: 'socket.io',
-    require : require('socket.io'),
-    server : server
-};
-
 // services
 roomdb.setServices('services_sample/');
-// connect database/s
+// connect database/s if needed
 roomdb.connectToDatabase('mysql', 'localhost', 'root', '');
 
 // set rooms
 rooms = new rooms({
     isdebug : true,
-    transporter : transporter,
-    roomdb : roomdb /* or null if roomdb */
+    transporter : {
+        type: 'socket.io',
+        server : server
+    },
+    roomdb : roomdb /* or null */
 });

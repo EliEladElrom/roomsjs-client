@@ -16,7 +16,7 @@ var CONNECTION = 'connection',
     JOIN_ROOM = 'joinRoom',
     REGISTER = 'register',
     STORE_STATE = 'storeState',
-    REQUEST_NUM_OF_USERS = 'numberOfUsersInRoom',
+    REQUEST_NUM_OF_USERS = messageTypes.REQUEST_NUM_OF_USERS,
     PRIVATE_MESSAGE = 'privmessage',
     SUBSCRIPTIONS = 'subscriptions',
     DISCONNECT = 'disconnect';
@@ -73,11 +73,11 @@ SocketController.prototype.getNumberOfRegisteredUsersInRoom = function (userId) 
     };
 
     this.emitMessageToSocket(REQUEST_NUM_OF_USERS, data);
-    sendMessageToLog('request num of users in a room');
+    sendMessageToLog('request num of users in a room to user: ' + JSON.stringify(data));
 }
 
 SocketController.prototype.getState = function (userId, stateName) {
-    sendMessageToLog('get state: '+stateName);
+    sendMessageToLog('get state: '+ stateName);
 
     var data = {
         userId : userId,
@@ -183,5 +183,4 @@ if (typeof exports != 'undefined' ) {
     exports.SUBSCRIPTIONS = SUBSCRIPTIONS;
     exports.DISCONNECT = DISCONNECT;
     exports.DBCONNECTOR = DBCONNECTOR;
-    exports.REQUEST_NUM_OF_USERS = REQUEST_NUM_OF_USERS;
 }
