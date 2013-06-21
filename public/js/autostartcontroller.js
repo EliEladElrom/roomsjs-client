@@ -46,7 +46,7 @@ function connectToSocket() {
     });
 
     transporter = {
-        transporterType : 'engine.io',
+        transporterType : 'socket.io',
         socket : io.connect(connectURL)
     };
 
@@ -100,8 +100,12 @@ function connectUser() {
     connectToSocket();
 }
 
-$(document).ready(function () {
-    'use strict';
-    connectUser();
-    listenToUserActions();
-});
+if (typeof jQuery !== 'undefined') {
+    $(document).ready(function () {
+        'use strict';
+        connectUser();
+        listenToUserActions();
+    });
+} else {
+    console.log('jQuery not loaded');
+}

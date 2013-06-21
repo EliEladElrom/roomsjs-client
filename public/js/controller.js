@@ -7,7 +7,7 @@
 var isOffline = false, // true | false
     isAutoConnect = false,
     isDragging = true,
-    topPositionVideoStart = 50, // 50 | 530 on blog    
+    topPositionVideoStart = 50,
     cursors = {},
     socketController,
     clientVO,
@@ -194,7 +194,11 @@ function connectUser() {
     addVideoPlayer(userId,false);
 }
 
-$(document).ready(function () {
-    listenToUserActions();
-    connectUser();
-});
+if (typeof jQuery != 'undefined') {
+    $(document).ready(function() {
+        listenToUserActions();
+        connectUser();
+    });
+} else {
+    console.log('jQuery not loaded');
+}
