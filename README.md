@@ -22,13 +22,13 @@ It has features such as:
 
 ## Installation
 
-  Install with the Node.JS package manager [npm](http://travis-ci.org/EladElrom/roomsjs-client):
+  Install with the Node.JS package manager npm:
 
       $ npm install roomsjs
       $ npm install rooms.db
 
 Download the front-end min file:
-[https://raw.github.com/EladElrom/roomsjs-client/master/client/dist/libs/rooms.min.js](https://raw.github.com/EladElrom/roomsjs-client/master/client/dist/rooms.min.js)
+[https://raw.github.com/EladElrom/roomsjs-client/master/client/dist/libs/rooms.min.js](https://raw.github.com/EladElrom/roomsjs-client/master/client/dist/libs/rooms.min.js)
 
 Examples of front-end implementation of `rooms`:
 
