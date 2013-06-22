@@ -9,7 +9,7 @@ var isOffline = false, // true | false
     isDragging = true,
     topPositionVideoStart = 50,
     cursors = {},
-    socketController,
+    rooms,
     clientVO,
     userId,
     roomName;
@@ -17,7 +17,7 @@ var isOffline = false, // true | false
 function listenToUserActions() {
 
     $("#numOfRegisteredUsersButton").bind('click', function () {
-        socketController.getNumberOfRegisteredUsersInRoom(userId);
+        rooms.getNumberOfRegisteredUsersInRoom(userId);
     });
 
     $("#grabAllPodsButton").bind('click', function () {
@@ -58,7 +58,7 @@ function listnToEventMouseMoveEvent() {
 
             $('.comment' + userId).bind('keyup', function () {
                 clientVO.comment = $('.comment' + userId).val();
-                socketController.storeState(clientVO, 'ClientVO', userId);
+                rooms.storeState(clientVO, 'ClientVO', userId);
             });
 
             $('.comment' + userId).focus();
@@ -67,7 +67,7 @@ function listnToEventMouseMoveEvent() {
         if (isDragging)
             draggingUserPod(clientVO, userId);
 
-        socketController.storeState(clientVO, 'ClientVO', clientVO.clientId);
+        rooms.storeState(clientVO, 'ClientVO', clientVO.clientId);
     });
 
     $('body').keydown(function () {
@@ -98,7 +98,7 @@ function connectToSocket() {
         }
     };
 
-    socketController = new SocketController({
+    rooms = new Rooms({
         connectURL : connectURL,
         roomSetup : roomSetup,
         userConnectedCallBackFunction : userConnectedCallBackFunction,
@@ -108,24 +108,20 @@ function connectToSocket() {
         debugMode : true
     });
 
-    transporter = {
-        transporterType : 'engine.io',
-        socket : io.connect(connectURL)
-    };
-
-    socketController.connectToSocket(transporter);
+    transporter = io.connect(connectURL);
+    rooms.start(transporter);
 }
 
 function userConnectedCallBackFunction() {
     'use strict';
     if (isAutoConnect) {
-        socketController.registerUser(userId);
+        rooms.registerUser(userId);
     }
 }
 
 function userRegisteredCallBackFunction() {
     'use strict';
-    socketController.getNumberOfRegisteredUsersInRoom(userId);
+    rooms.getNumberOfRegisteredUsersInRoom(userId);
 }
 
 function numOfUsersInARoomCallBackFunction(data) {
@@ -169,7 +165,7 @@ function messageFromRoomCallBackfunction (data) {
 function addVideoPlayer(clientId,isViewer) {
     var dropDivPosition = $(".well").position();
     $('body').append('<div id="userDraggableContainer' + clientId + '" class="ui-widget-content" style="width: 120px; height: 100px; position:absolute; top: ' +topPositionVideoStart+'px; left: ' +(dropDivPosition.left+20)+'px;"><div id="flashcontent' +clientId+'">// HTML5 version goes here</div></div>');
-    var movie = "/video/flash/release/WebCam.swf";
+    var movie = "/components/video//players/flash/release/WebCam.swf";
     var flashvars = (isViewer) ? {userType : 'viewer', userId: clientId} : {userType : 'presenter', userId: clientId};
     var params = { wmode: "transparent"};
     var attributes = { id: "WebCam" };
@@ -187,7 +183,7 @@ function addVideoPlayer(clientId,isViewer) {
 }
 
 function connectUser() {
-    userId = SocketController.makeid(10);
+    userId = Rooms.makeid(10);
     roomName = window.location.hostname;
     isAutoConnect = true;
     connectToSocket();

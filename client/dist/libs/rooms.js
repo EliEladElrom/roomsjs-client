@@ -1,5 +1,5 @@
 var options,
-    socket;
+    transporter;
 
 // message in
 var messageTypes = {
@@ -22,7 +22,7 @@ var CONNECTION = 'connection',
     DISCONNECT = 'disconnect';
 
 
-function SocketController(optns) {
+function Rooms(optns) {
     'use strict';
     options = optns;
 }
@@ -34,26 +34,26 @@ sendMessageToLog = function (msg) {
     }
 }
 
-SocketController.prototype.sendMessageToSocket = function (message) {
-    socket.send(message);
+Rooms.prototype.sendMessage = function (message) {
+    transporter.send(message);
     sendMessageToLog('message to room: ' + message);
 }
 
-SocketController.prototype.emitMessageToSocket = function (message, data) {
-    socket.emit(message,data);
+Rooms.prototype.emitMessage = function (message, data) {
+    transporter.emit(message,data);
     sendMessageToLog('emit message to room: ' + message);
 }
 
-SocketController.prototype.registerUser = function (userId) {
+Rooms.prototype.registerUser = function (userId) {
     var data = {
         userId : userId,
         roomName : options.roomSetup.roomName
     };
-    this.emitMessageToSocket(REGISTER,data);
+    this.emitMessage(REGISTER,data);
     options.userRegisteredCallBackFunction();
 }
 
-SocketController.prototype.storeState = function (stateVO, stateName, userId) {
+Rooms.prototype.storeState = function (stateVO, stateName, userId) {
 
     var object = {
         name : stateName,
@@ -62,21 +62,21 @@ SocketController.prototype.storeState = function (stateVO, stateName, userId) {
     };
 
     sendMessageToLog('store state ' + stateName);
-    this.emitMessageToSocket(STORE_STATE,object);
+    this.emitMessage(STORE_STATE,object);
 }
 
-SocketController.prototype.getNumberOfRegisteredUsersInRoom = function (userId) {
+Rooms.prototype.getNumberOfRegisteredUsersInRoom = function (userId) {
 
     var data = {
         userId : userId,
         room : options.roomSetup.roomName
     };
 
-    this.emitMessageToSocket(REQUEST_NUM_OF_USERS, data);
+    this.emitMessage(REQUEST_NUM_OF_USERS, data);
     sendMessageToLog('request num of users in a room to user: ' + JSON.stringify(data));
 }
 
-SocketController.prototype.getState = function (userId, stateName) {
+Rooms.prototype.getState = function (userId, stateName) {
     sendMessageToLog('get state: '+ stateName);
 
     var data = {
@@ -85,15 +85,15 @@ SocketController.prototype.getState = function (userId, stateName) {
         stateName : stateName
     };
 
-    this.emitMessageToSocket(GET_STATE,data);
+    this.emitMessage(GET_STATE,data);
 }
 
-SocketController.prototype.connectToSocket = function (transporter) {
-    socket = transporter.socket;
-    this.listenToMessagesFromSocket();
+Rooms.prototype.start = function (transp) {
+    transporter = transp;
+    this.listenToMessages();
 }
 
-SocketController.prototype.callDbConnector = function (userId, methodName, callBackMethodName, params) {
+Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodName, params) {
 
     var data = {
         userId : userId,
@@ -103,58 +103,58 @@ SocketController.prototype.callDbConnector = function (userId, methodName, callB
         params : params
     };
 
-    this.emitMessageToSocket('dbconnector',data);
+    this.emitMessage('dbconnector',data);
 }
 
-SocketController.prototype.listenToMessagesFromSocket = function () {
+Rooms.prototype.listenToMessages = function () {
 
     sendMessageToLog('listenToMessages from room: ' + options.roomSetup.roomName);
 
     Object.keys(messageTypes).forEach(function (key) {
-            socket.on(messageTypes[key], function (data) {
-                SocketController.prototype[messageTypes[key]](data);
+            transporter.on(messageTypes[key], function (data) {
+                Rooms.prototype[messageTypes[key]](data);
             });
         });
 }
 
-SocketController.prototype[messageTypes.CONNECT] = function (data) {
-    socket.emit(JOIN_ROOM, options.roomSetup);
+Rooms.prototype[messageTypes.CONNECT] = function (data) {
+    transporter.emit(JOIN_ROOM, options.roomSetup);
     sendMessageToLog('connect to room: ' + options.roomSetup.roomName);
     options.userConnectedCallBackFunction();
 }
 
-SocketController.prototype[messageTypes.DBCONNECTOR] = function (data) {
+Rooms.prototype[messageTypes.DBCONNECTOR] = function (data) {
     sendMessageToLog('dbconnector message back, methodName: ' + data.data.methodName);
     if (data.data.hasOwnProperty('callBackMethodName')) {
         window[data.data.callBackMethodName](data);
     }
 }
 
-SocketController.prototype[messageTypes.MESSAGE] = function (data) {
+Rooms.prototype[messageTypes.MESSAGE] = function (data) {
     sendMessageToLog('message from room');
     if (messageFromRoomCallBackfunction != null) {
         messageFromRoomCallBackfunction (data);
     }
 }
 
-SocketController.prototype[messageTypes.REQUEST_NUM_OF_USERS] = function (data) {
+Rooms.prototype[messageTypes.REQUEST_NUM_OF_USERS] = function (data) {
     sendMessageToLog('numberOfUsersInRoom message: ' + data.size);
     if (options.numOfUsersInARoomCallBackFunction != null) {
         options.numOfUsersInARoomCallBackFunction(data);
     }
 }
 
-SocketController.prototype[messageTypes.GET_STATE] = function (data) {
+Rooms.prototype[messageTypes.GET_STATE] = function (data) {
     sendMessageToLog('get state results: ' + data.name);
     messageFromRoomCallBackfunction (data.vo);
 }
 
-SocketController.prototype[messageTypes.STATE_CHANGE] = function (data) {
+Rooms.prototype[messageTypes.STATE_CHANGE] = function (data) {
     sendMessageToLog('get state change: ' + data.name);
     options.stateChangeCallBackFunction(data.vo);
 }
 
-SocketController.makeid = function (numOfChar) {
+Rooms.makeid = function (numOfChar) {
     'use strict';
     var text = "",
         possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
@@ -168,7 +168,7 @@ SocketController.makeid = function (numOfChar) {
 }
 
 if (typeof exports != 'undefined' ) {
-    exports.socket = socket;
+    exports.transporter = transporter;
     exports.options = options;
     exports.CONNECTION = CONNECTION;
     exports.CONNECT = CONNECT;

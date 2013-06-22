@@ -5,14 +5,14 @@
  */
 
 var isAutoConnect = false,
-    socketController,
+    rooms,
     userId,
     roomName;
 
 function listenToUserActions() {
     $("#getResultsButton").bind('click', function () {
-        socketController.callDbConnector(userId, 'getitems', 'messageFromRoomCallBackfunction');
-        socketController.callDbConnector(userId, 'getnames', 'messageFromRoomCallBackfunction');
+        rooms.callDbConnector(userId, 'getitems', 'messageFromRoomCallBackfunction');
+        rooms.callDbConnector(userId, 'getnames', 'messageFromRoomCallBackfunction');
     });
 }
 
@@ -24,7 +24,7 @@ function connectToSocket() {
         transporter,
         connectURL;
 
-    userId = SocketController.makeid(10);
+    userId = Rooms.makeid(10);
     roomName = window.location.hostname;
     port = (hostName !== '0.0.0.0' && hostName !== 'localhost') ? '80' : '8081';
     connectURL = 'http://' + roomName + ':' + port;
@@ -36,7 +36,7 @@ function connectToSocket() {
         }
     };
 
-    socketController = new SocketController({
+    rooms = new Rooms({
         roomSetup : roomSetup,
         userConnectedCallBackFunction : userConnectedCallBackFunction,
         userRegisteredCallBackFunction : userRegisteredCallBackFunction,
@@ -45,12 +45,8 @@ function connectToSocket() {
         debugMode : true
     });
 
-    transporter = {
-        transporterType : 'socket.io',
-        socket : io.connect(connectURL)
-    };
-
-    socketController.connectToSocket(transporter);
+    transporter = io.connect(connectURL);
+    rooms.start(transporter);
 }
 
 function stateChangeCallBackFunction(data) {
@@ -61,13 +57,13 @@ function stateChangeCallBackFunction(data) {
 function userConnectedCallBackFunction() {
     'use strict';
     if (isAutoConnect) {
-        socketController.registerUser(userId);
+        rooms.registerUser(userId);
     }
 }
 
 function userRegisteredCallBackFunction() {
     'use strict';
-    socketController.getNumberOfRegisteredUsersInRoom(userId);
+    rooms.getNumberOfRegisteredUsersInRoom(userId);
 }
 
 function numOfUsersInARoomCallBackFunction(data) {

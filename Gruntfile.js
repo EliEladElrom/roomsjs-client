@@ -1,11 +1,11 @@
 module.exports = function (grunt) {
 
     Roomsjs = [
-        'socketcontroller.js'
+        'rooms.js'
     ];
 
     Roomsjs = Roomsjs.map(function (p) {
-        return 'client/js/libs/' + p;
+        return 'client/dist/libs/' + p;
     });
 
     grunt.initConfig({
@@ -17,7 +17,7 @@ module.exports = function (grunt) {
                     }
                 },
                 files: {
-                    'public/js/libs/socketcontroller.min.js': Roomsjs
+                    'client/dist/libs/rooms.min.js': Roomsjs
                 }
             }
         },
