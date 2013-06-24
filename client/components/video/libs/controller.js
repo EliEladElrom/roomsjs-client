@@ -109,7 +109,10 @@ function connectToSocket() {
     });
 
     transporter = io.connect(connectURL);
-    rooms.start(transporter);
+    rooms.start({
+        transporter : transporter,
+        type : 'socket.io'
+    });
 }
 
 function userConnectedCallBackFunction() {
@@ -183,8 +186,8 @@ function addVideoPlayer(clientId,isViewer) {
 }
 
 function connectUser() {
-    userId = Rooms.makeid(10);
-    roomName = window.location.hostname;
+    userId = Rooms.makeid(15);
+    roomName = window.location.href;
     isAutoConnect = true;
     connectToSocket();
     addVideoPlayer(userId,false);

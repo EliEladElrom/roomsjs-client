@@ -21,7 +21,7 @@ roomdb.connectToDatabase('mysql', 'localhost', 'root', '');
 rooms = new rooms({
     isdebug : true,
     transporter : {
-        type: 'socket.io',
+        type: 'engine.io',
         server : server
     },
     roomdb : roomdb /* or null */

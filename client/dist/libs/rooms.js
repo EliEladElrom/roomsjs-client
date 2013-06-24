@@ -34,22 +34,12 @@ sendMessageToLog = function (msg) {
     }
 }
 
-Rooms.prototype.sendMessage = function (message) {
-    transporter.send(message);
-    sendMessageToLog('message to room: ' + message);
-}
-
-Rooms.prototype.emitMessage = function (message, data) {
-    transporter.emit(message,data);
-    sendMessageToLog('emit message to room: ' + message);
-}
-
 Rooms.prototype.registerUser = function (userId) {
     var data = {
         userId : userId,
         roomName : options.roomSetup.roomName
     };
-    this.emitMessage(REGISTER,data);
+    this.sendMessage(REGISTER, data);
     options.userRegisteredCallBackFunction();
 }
 
@@ -62,7 +52,7 @@ Rooms.prototype.storeState = function (stateVO, stateName, userId) {
     };
 
     sendMessageToLog('store state ' + stateName);
-    this.emitMessage(STORE_STATE,object);
+    this.sendMessage(STORE_STATE, object);
 }
 
 Rooms.prototype.getNumberOfRegisteredUsersInRoom = function (userId) {
@@ -72,7 +62,7 @@ Rooms.prototype.getNumberOfRegisteredUsersInRoom = function (userId) {
         room : options.roomSetup.roomName
     };
 
-    this.emitMessage(REQUEST_NUM_OF_USERS, data);
+    this.sendMessage(REQUEST_NUM_OF_USERS, data);
     sendMessageToLog('request num of users in a room to user: ' + JSON.stringify(data));
 }
 
@@ -85,12 +75,31 @@ Rooms.prototype.getState = function (userId, stateName) {
         stateName : stateName
     };
 
-    this.emitMessage(GET_STATE,data);
+    this.sendMessage(GET_STATE, data);
 }
 
-Rooms.prototype.start = function (transp) {
-    transporter = transp;
-    this.listenToMessages();
+Rooms.prototype.start = function (options) {
+    transporter = options.transporter;
+
+    console.log('transporter: ' + options.type);
+
+    switch (options.type) {
+        case 'socket.io':
+            Object.keys(messageTypes).forEach(function (key) {
+                transporter.on(messageTypes[key], function (data) {
+                    Rooms.prototype[messageTypes[key]](data);
+                });
+            });
+            break;
+        case 'engine.io':
+            transporter.onopen = function () {
+                transporter.onmessage = function (data) {
+                    var dataParsed = JSON.parse(data);
+                    Rooms.prototype[dataParsed.message](dataParsed.data);
+                };
+            }
+            break;
+    }
 }
 
 Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodName, params) {
@@ -103,22 +112,11 @@ Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodNa
         params : params
     };
 
-    this.emitMessage('dbconnector',data);
-}
-
-Rooms.prototype.listenToMessages = function () {
-
-    sendMessageToLog('listenToMessages from room: ' + options.roomSetup.roomName);
-
-    Object.keys(messageTypes).forEach(function (key) {
-            transporter.on(messageTypes[key], function (data) {
-                Rooms.prototype[messageTypes[key]](data);
-            });
-        });
+    this.sendMessage('dbconnector',data);
 }
 
 Rooms.prototype[messageTypes.CONNECT] = function (data) {
-    transporter.emit(JOIN_ROOM, options.roomSetup);
+    this.sendMessage(JOIN_ROOM, options.roomSetup);
     sendMessageToLog('connect to room: ' + options.roomSetup.roomName);
     options.userConnectedCallBackFunction();
 }
@@ -167,20 +165,25 @@ Rooms.makeid = function (numOfChar) {
     return text;
 }
 
+Rooms.prototype.sendMessage = function (message, data) {
+    transporter.send(JSON.stringify({ message : message, data : data}));
+    sendMessageToLog('emit message to room: ' + message);
+}
+
 if (typeof exports != 'undefined' ) {
     exports.transporter = transporter;
     exports.options = options;
     exports.CONNECTION = CONNECTION;
-    exports.CONNECT = CONNECT;
-    exports.MESSAGE = MESSAGE;
+    exports.CONNECT = messageTypes.CONNECT;
+    exports.MESSAGE = messageTypes.MESSAGE;
     exports.JOIN_ROOM = JOIN_ROOM;
     exports.REGISTER = REGISTER;
     exports.REQUEST_NUM_OF_USERS = REQUEST_NUM_OF_USERS;
     exports.STORE_STATE = STORE_STATE;
-    exports.STATE_CHANGE = STATE_CHANGE;
+    exports.STATE_CHANGE = messageTypes.STATE_CHANGE;
     exports.PRIVATE_MESSAGE = PRIVATE_MESSAGE;
-    exports.GET_STATE = GET_STATE;
+    exports.GET_STATE = messageTypes.GET_STATE;
     exports.SUBSCRIPTIONS = SUBSCRIPTIONS;
     exports.DISCONNECT = DISCONNECT;
-    exports.DBCONNECTOR = DBCONNECTOR;
+    exports.DBCONNECTOR = messageTypes.DBCONNECTOR;
 }

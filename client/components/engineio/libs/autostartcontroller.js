@@ -45,10 +45,10 @@ function connectToSocket() {
         debugMode : true
     });
 
-    transporter = io.connect(connectURL);
+    transporter = new eio.Socket('ws://localhost/');
     rooms.start({
         transporter : transporter,
-        type : 'socket.io'
+        type : 'engine.io'
     });
 }
 
