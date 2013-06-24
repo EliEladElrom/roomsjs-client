@@ -6,7 +6,9 @@
 A Javascript Node.JS module, provides a way to switch different transporters for creating rooms and streaming data between users, streaming data from a database and even stream from CDNs.
 `roomsjs`, `roomsdb` and `roomsjs-client` together combine a powerful light-weight backend/front-end libraries built to stream live data and solve same problems related to realtime communications, stream data from a database and even stream 3rd party APIs.
 
-The technology still young and memory leaks were found in `socket.io` and issues around `engine.io`'s `Websocket` transporter so the idea is to solve problem by allowing using different transporters and modify client implementation instead of having to do an open heart surgery when you are already committed to one technology or another.
+Node.js technology still relatively young and memory leaks were found in `socket.io` and issues around `engine.io`'s `Websocket` transporter.
+The idea is to solve the problem by allowing using different transporters and modify client implementation instead of having to do an open heart surgery when you are already committed to one transporter or another.
+`socket.io` underline high level API is `engine.io`, but there are cases where you want to have the `socket.io` for emitter event functionality for instance.  `rooms.js` is a lower level API, just like `socket.io`, however it's lighter weight and doesn't have the sugar and all the bell and whistle of `socket.io`.
 
 It has features such as:
 
@@ -21,7 +23,7 @@ It has features such as:
     8. AMS Flash Webcam fallback
     9. HTML5 Webcam
     10. Database connector (such as mysql).
-    11. Switch different transporters: supports `socket.io`, `engine.io` and soon `SockJS`
+    11. Switch different transporters: supports `socket.io` (and `engine.io`).  `SockJS` comming soon.
 
 ## Installation
 
