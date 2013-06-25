@@ -27,7 +27,7 @@ function connectToSocket() {
     userId = Rooms.makeid(16);
     roomName = window.location.href;
     port = (hostName !== '0.0.0.0' && hostName !== 'localhost') ? '80' : '8081';
-    connectURL = 'http://' + hostName + ':' + port;
+    connectURL = 'http://' + hostName + ':' + port + '/echo';
 
     roomSetup = {
         roomName : roomName,
@@ -45,7 +45,7 @@ function connectToSocket() {
         debugMode : true
     });
 
-    transporter = new SockJS('http://localhost/');
+    transporter = new SockJS(connectURL);
     rooms.start({
         transporter : transporter,
         type : 'SockJS'

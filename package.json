@@ -1,15 +1,13 @@
 {
-  "name": "roomsjs-fronend",
-  "description": "roomsjs-fronend",
+  "name": "roomsjs-client",
+  "description": "roomsjs-client",
   "author": "Elad Elrom <elad.ny@gmail.com>",
   "version": "0.0.1",
   "dependencies": {
     "connect": "1.8.5",
     "express": "3.0.0rc5",
     "roomsjs": ">=0.0.25",
-    "rooms.db": ">=0.0.01",
-    "engine.io": "~0.6.3",
-    "sockjs": "~0.3.7"
+    "rooms.db": ">=0.0.01"
   },
   "devDependencies": {
     "mocha": "*",
