@@ -8,9 +8,7 @@ var express     = require('express'),
     app         = express().use(express.static(__dirname + '/client'));
 
 // create server
-var server = require('http').createServer(app).listen(port, function () {
-        console.log('Listening on http://' + os.hostname() + ':' + port);
-    });
+var server = require('http').createServer(app).listen(port, '0.0.0.0');
 
 // services
 roomdb.setServices('services_sample/');
@@ -21,7 +19,7 @@ roomdb.connectToDatabase('mysql', 'localhost', 'root', '');
 rooms = new rooms({
     isdebug : true,
     transporter : {
-        type: 'engine.io',
+        type: 'sockjs',
         server : server
     },
     roomdb : roomdb /* or null */

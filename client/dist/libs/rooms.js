@@ -82,8 +82,6 @@ Rooms.prototype.getState = function (userId, stateName) {
 Rooms.prototype.start = function (options) {
     transporter = options.transporter;
 
-    console.log('transporter: ' + options.type);
-
     switch (options.type) {
         case 'socket.io':
             Object.keys(messageTypes).forEach(function (key) {
@@ -103,7 +101,8 @@ Rooms.prototype.start = function (options) {
         case 'SockJS':
             transporter.onopen = function () {
                 transporter.onmessage = function (data) {
-                    var dataParsed = JSON.parse(data);
+                    console.log(data);
+                    var dataParsed = JSON.parse(data.data);
                     Rooms.prototype[dataParsed.message](dataParsed.data);
                 };
             }
@@ -176,7 +175,7 @@ Rooms.makeid = function (numOfChar) {
 
 Rooms.prototype.sendMessage = function (message, data) {
     transporter.send(JSON.stringify({ message : message, data : data}));
-    sendMessageToLog('emit message to room: ' + message);
+    sendMessageToLog('send message to room: ' + message);
 }
 
 if (typeof exports != 'undefined' ) {

@@ -83,13 +83,11 @@ function numOfUsersInARoomCallBackFunction(data) {
 
 function messageFromRoomCallBackfunction(data) {
     'use strict';
-    sendMessageToLog('messageFromRoomCallBackfunction');
     sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function messageFromRoomCallBackfunction2(data) {
     'use strict';
-    sendMessageToLog('messageFromRoomCallBackfunction2');
     sendMessageToLog(JSON.stringify(data.vo));
 }
 
