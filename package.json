@@ -8,7 +8,8 @@
     "express": "3.0.0rc5",
     "roomsjs": ">=0.0.25",
     "rooms.db": ">=0.0.01",
-    "engine.io": "~0.6.3"
+    "engine.io": "~0.6.3",
+    "sockjs": "~0.3.7"
   },
   "devDependencies": {
     "mocha": "*",

@@ -27,7 +27,7 @@ function listenToUserActions() {
 
         for (user in cursors) {
             clientVO = new ClientVO(user, dropDivPosition.left + (++i * 150), topPositionVideoStart, '');
-            console.log('grabAllPodsButton: ' + clientVO);
+            sendMessageToLog('grabAllPodsButton: ' + clientVO);
             draggingUserPod(clientVO,user);
         }
     });
@@ -38,7 +38,7 @@ function listenToUserActions() {
 }
 
 function acceptWebCam() {
-    console.log('acceptWebCam');
+    sendMessageToLog('acceptWebCam');
     $('#userDraggableContainer' + userId).draggable();
     $('#userDraggableContainer' + userId).stop();
     listnToEventMouseMoveEvent();
@@ -133,9 +133,9 @@ function numOfUsersInARoomCallBackFunction(data) {
     document.getElementById('visitors').innerHTML = '<div style="font-size: 15px; top: 5px">Currently there are <b>' +numofppl+'</b> visitors on this page</div>';
 
     if (data.hasOwnProperty('register')) {
-        console.log('register userId: ' + data.register);
+        sendMessageToLog('register userId: ' + data.register);
     } else if (data.hasOwnProperty('disconnect')) {
-        console.log('disconnect userId: ' + data.disconnect);
+        sendMessageToLog('disconnect userId: ' + data.disconnect);
     }
 }
 
@@ -156,13 +156,13 @@ function stateChangeCallBackFunction(data) {
     $('.comment' +cursorId).css('left',(data.mouseX + 30) + 'px');
     document.getElementById('comment' +cursorId).innerHTML = data.comment;
 
-    console.log('#userDraggableContainer' + data.clientId + ': x: ' + data.mouseX + ',y: ' + data.mouseY);
+    sendMessageToLog('#userDraggableContainer' + data.clientId + ': x: ' + data.mouseX + ',y: ' + data.mouseY);
     $('#userDraggableContainer' +data.clientId).css('top',(data.mouseY + 50)+'px');
     $('#userDraggableContainer' +data.clientId).css('left',(data.mouseX + 40)+'px');
 }
 
 function messageFromRoomCallBackfunction (data) {
-    console.log('messageFromRoomCallBackfunction: ' +data);
+    sendMessageToLog('messageFromRoomCallBackfunction: ' +data);
 }
 
 function addVideoPlayer(clientId,isViewer) {
@@ -179,7 +179,7 @@ function addVideoPlayer(clientId,isViewer) {
         $('#userDraggableContainer' + clientId).stop();
     }
     else {
-        console.log('waiting for user to accept webcam:: acceptWebCam');
+        sendMessageToLog('waiting for user to accept webcam:: acceptWebCam');
         if (isOffline)
             acceptWebCam();
     }
@@ -199,5 +199,5 @@ if (typeof jQuery != 'undefined') {
         connectUser();
     });
 } else {
-    console.log('jQuery not loaded');
+    sendMessageToLog('jQuery not loaded');
 }

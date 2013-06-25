@@ -46,6 +46,7 @@ Rooms.prototype.registerUser = function (userId) {
 Rooms.prototype.storeState = function (stateVO, stateName, userId) {
 
     var object = {
+        roomName : options.roomSetup.roomName,
         name : stateName,
         vo : stateVO,
         userId : userId
@@ -92,6 +93,14 @@ Rooms.prototype.start = function (options) {
             });
             break;
         case 'engine.io':
+            transporter.onopen = function () {
+                transporter.onmessage = function (data) {
+                    var dataParsed = JSON.parse(data);
+                    Rooms.prototype[dataParsed.message](dataParsed.data);
+                };
+            }
+            break;
+        case 'SockJS':
             transporter.onopen = function () {
                 transporter.onmessage = function (data) {
                     var dataParsed = JSON.parse(data);

@@ -75,22 +75,22 @@ function numOfUsersInARoomCallBackFunction(data) {
     document.getElementById('visitors').innerHTML = '<div style="font-size: 15px; top: 5px">Currently there are <b>'+numofppl+'</b> visitors on this page</div>';
 
     if (data.hasOwnProperty('register')) {
-        console.log('register userId: ' + data.register);
+        sendMessageToLog('register userId: ' + data.register);
     } else if (data.hasOwnProperty('disconnect')) {
-        console.log('disconnect userId: ' + data.disconnect);
+        sendMessageToLog('disconnect userId: ' + data.disconnect);
     }
 }
 
 function messageFromRoomCallBackfunction(data) {
     'use strict';
-    console.log('messageFromRoomCallBackfunction');
-    console.log(JSON.stringify(data.vo));
+    sendMessageToLog('messageFromRoomCallBackfunction');
+    sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function messageFromRoomCallBackfunction2(data) {
     'use strict';
-    console.log('messageFromRoomCallBackfunction2');
-    console.log(JSON.stringify(data.vo));
+    sendMessageToLog('messageFromRoomCallBackfunction2');
+    sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function connectUser() {
@@ -106,5 +106,5 @@ if (typeof jQuery !== 'undefined') {
         listenToUserActions();
     });
 } else {
-    console.log('jQuery not loaded');
+    sendMessageToLog('jQuery not loaded');
 }
