@@ -1,0 +1,16 @@
+{
+  "name": "roomsjs-client",
+  "version": "0.0.31",
+  "main": "client/dist/libs/rooms.js",
+  "ignore": [
+    "**/.*",
+    "node_modules/",
+    "components/",
+    "services_sample/",
+    ".travis.yml",
+    "Gruntfile.js",
+    "package.json",
+    "server.js",
+    "client/components/"
+  ]
+}

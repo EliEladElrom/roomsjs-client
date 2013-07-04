@@ -1,6 +1,6 @@
 # roomsjs - streaming live data built to support different transporters
 
-[![Build Status](https://secure.travis-ci.org/EladElrom/roomsjs-client.png)](http://travis-ci.org/EladElrom/roomsjs-client)
+[![Build Status](https://secure.travis-ci.org/eladelrom/roomsjs-client.png)](http://travis-ci.org/eladelrom/roomsjs-client)
 [![NPM version](https://badge.fury.io/js/roomsjs.png)](http://badge.fury.io/js/roomsjs)
 
 A Javascript Node.JS module, provides a way to switch different transporters for creating rooms and streaming data between users, streaming data from a database and even stream from CDNs.
@@ -35,7 +35,11 @@ It has features such as:
       $ npm install rooms.db
 
 Download the front-end min file:
-[https://raw.github.com/EladElrom/roomsjs-client/master/client/dist/libs/rooms.min.js](https://raw.github.com/EladElrom/roomsjs-client/master/client/dist/libs/rooms.min.js)
+[https://raw.github.com/eladelrom/roomsjs-client/master/client/dist/libs/rooms.min.js](https://raw.github.com/eladelrom/roomsjs-client/master/client/dist/libs/rooms.min.js)
+
+or using bower:
+
+> bower install roomsjs-client
 
 Examples of front-end implementation of `rooms`:
 
@@ -165,7 +169,7 @@ Example of streaming a pod consists of live camera feeds and text comment feed b
 
 Below is a ten thousand foot diagram that shows how the different pieces of the platform are coming together.
 
-![backend diagram](https://raw.github.com/EladElrom/poet/ei-pages/effectiveidea/public/images/roomsjs-diagram1.png)
+![backend diagram](https://raw.github.com/eladelrom/poet/ei-pages/effectiveidea/public/images/roomsjs-diagram1.png)
 <br><br>
 
 See more information here about init concept read here: [http://effectiveidea.com/_posts/roomsjs](http://effectiveidea.com/_posts/roomsjs)

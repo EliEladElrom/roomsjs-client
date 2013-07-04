@@ -11,8 +11,8 @@ var isAutoConnect = false,
 
 function listenToUserActions() {
     $("#getResultsButton").bind('click', function () {
-        rooms.callDbConnector(userId, 'getitems', 'messageFromRoomCallBackfunction');
-        rooms.callDbConnector(userId, 'getnames', 'messageFromRoomCallBackfunction');
+        serviceCall(userId, 'getitems', 'messageFromRoomCallBackfunction');
+        serviceCall(userId, 'getnames', 'messageFromRoomCallBackfunction');
     });
 }
 
@@ -107,4 +107,10 @@ if (typeof jQuery !== 'undefined') {
     });
 } else {
     sendMessageToLog('jQuery not loaded');
+}
+
+function serviceCall(serviceMethodName, retCallBackName, params) {
+  'use strict';
+  console.log('Calling: ' + serviceMethodName);
+  rooms.callDbConnector(userId, serviceMethodName, retCallBackName, params);
 }

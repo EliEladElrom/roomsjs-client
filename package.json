@@ -10,10 +10,6 @@
     "rooms.db": ">=0.0.01"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*",
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.2"
   },
   "engine": "node >= 0.6.6"
 }
