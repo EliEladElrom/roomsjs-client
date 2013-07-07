@@ -43,7 +43,7 @@ or using bower:
 
 Examples of front-end implementation of `rooms`:
 
-> client/js/components
+> client/examples
 
 ## Example
 
