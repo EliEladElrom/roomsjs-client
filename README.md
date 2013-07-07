@@ -44,7 +44,7 @@ or using bower:
 
 ## Example
 
-Back-end code to create the rooms services and connect to database and/or 3rd party APIs for streaming;
+Server code to create the rooms, services and connect to database and/or 3rd party APIs for streaming;
 
 <pre lang="javascript"><code>
 var os          = require('os'),

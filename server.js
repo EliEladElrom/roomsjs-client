@@ -7,10 +7,13 @@ var os          = require('os'),
 var express     = require('express'),
   app         = express().use(express.static(__dirname + '/client'));
 
-// create server
+// create server: engine.io, socket.io
 var server = require('http').createServer(app).listen(port, function () {
   console.log('Listening on http://' + os.hostname() + ':' + port);
 });
+
+// create server: sockjs
+// var server = require('http').createServer(app).listen(port, '0.0.0.0');
 
 // services
 roomdb.setServices('services_sample/');
@@ -21,7 +24,7 @@ roomdb.connectToDatabase('mysql', 'localhost', 'root', '');
 rooms = new rooms({
   isdebug : true,
   transporter : {
-    type: 'engine.io',
+    type: 'engine.io', /* engine.io, socket.io, sockjs */
     server : server
   },
   roomdb : roomdb /* or null */
