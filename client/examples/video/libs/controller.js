@@ -168,7 +168,7 @@ function messageFromRoomCallBackfunction (data) {
 function addVideoPlayer(clientId,isViewer) {
     var dropDivPosition = $(".well").position();
     $('body').append('<div id="userDraggableContainer' + clientId + '" class="ui-widget-content" style="width: 120px; height: 100px; position:absolute; top: ' +topPositionVideoStart+'px; left: ' +(dropDivPosition.left+20)+'px;"><div id="flashcontent' +clientId+'">// HTML5 version goes here</div></div>');
-    var movie = "/components/video//players/flash/release/WebCam.swf";
+    var movie = "/examples/video/players/flash/release/WebCam.swf";
     var flashvars = (isViewer) ? {userType : 'viewer', userId: clientId} : {userType : 'presenter', userId: clientId};
     var params = { wmode: "transparent"};
     var attributes = { id: "WebCam" };
