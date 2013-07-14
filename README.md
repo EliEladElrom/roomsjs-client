@@ -49,7 +49,7 @@ Or install with bower:
 
 Server code to create the rooms, services and connect to database and/or 3rd party APIs for streaming;
 
-<pre>
+<pre lang="javascript">
 var os          = require('os'),
   rooms       = require('roomsjs'),
   roomdb      = require('rooms.db'),
