@@ -11,6 +11,9 @@
     "Gruntfile.js",
     "package.json",
     "server.js",
-    "client/components/"
+    "client/components/",
+    "roomsjs-logo.png",
+    ".jshintrc",
+    ".editorconfig"
   ]
 }
