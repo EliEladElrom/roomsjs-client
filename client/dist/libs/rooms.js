@@ -1,4 +1,5 @@
-var options,
+// global
+var roomsOptions,
   transporter;
 
 // message in
@@ -21,14 +22,14 @@ var CONNECTION = 'connection',
   SUBSCRIPTIONS = 'subscriptions',
   DISCONNECT = 'disconnect';
 
-function Rooms(optns) {
+function Rooms(options) {
   'use strict';
-  options = optns;
+  roomsOptions = options;
 }
 
 sendMessageToLog = function (msg) {
   'use strict';
-  if (options.debugMode) {
+  if (roomsOptions.debugMode) {
     console.log(msg);
   }
 }
@@ -36,16 +37,16 @@ sendMessageToLog = function (msg) {
 Rooms.prototype.registerUser = function (userId) {
   var data = {
     userId : userId,
-    roomName : options.roomSetup.roomName
+    roomName : roomsOptions.roomSetup.roomName
   };
   this.sendMessage(REGISTER, data);
-  options.userRegisteredCallBackFunction();
+  roomsOptions.userRegisteredCallBackFunction();
 }
 
 Rooms.prototype.storeState = function (stateVO, stateName, userId) {
 
   var object = {
-    roomName : options.roomSetup.roomName,
+    roomName : roomsOptions.roomSetup.roomName,
     name : stateName,
     vo : stateVO,
     userId : userId
@@ -59,7 +60,7 @@ Rooms.prototype.getNumberOfRegisteredUsersInRoom = function (userId) {
 
   var data = {
     userId : userId,
-    room : options.roomSetup.roomName
+    room : roomsOptions.roomSetup.roomName
   };
 
   this.sendMessage(REQUEST_NUM_OF_USERS, data);
@@ -71,17 +72,17 @@ Rooms.prototype.getState = function (userId, stateName) {
 
   var data = {
     userId : userId,
-    room : options.roomSetup.roomName,
+    room : roomsOptions.roomSetup.roomName,
     stateName : stateName
   };
 
   this.sendMessage(GET_STATE, data);
 }
 
-Rooms.prototype.start = function (options) {
-  transporter = options.transporter;
+Rooms.prototype.start = function (roomsOptions) {
+  transporter = roomsOptions.transporter;
 
-  switch (options.type) {
+  switch (roomsOptions.type) {
     case 'socket.io':
       Object.keys(messageTypes).forEach(function (key) {
         transporter.on(messageTypes[key], function (data) {
@@ -100,7 +101,7 @@ Rooms.prototype.start = function (options) {
     case 'SockJS':
       transporter.onopen = function () {
         transporter.onmessage = function (data) {
-          console.log(data);
+          sendMessageToLog(data);
           var dataParsed = JSON.parse(data.data);
           Rooms.prototype[dataParsed.message](dataParsed.data);
         };
@@ -114,7 +115,7 @@ Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodNa
   var data = {
     userId : userId,
     methodName : methodName,
-    room : options.roomSetup.roomName,
+    room : roomsOptions.roomSetup.roomName,
     callBackMethodName : callBackMethodName,
     params : params
   };
@@ -123,17 +124,17 @@ Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodNa
 }
 
 Rooms.prototype[messageTypes.CONNECT] = function (data) {
-  this.sendMessage(JOIN_ROOM, options.roomSetup);
-  sendMessageToLog('connect to room: ' + options.roomSetup.roomName);
-  options.userConnectedCallBackFunction();
+  this.sendMessage(JOIN_ROOM, roomsOptions.roomSetup);
+  sendMessageToLog('connect to room: ' + roomsOptions.roomSetup.roomName);
+  roomsOptions.userConnectedCallBackFunction();
 }
 
 Rooms.prototype[messageTypes.DBCONNECTOR] = function (data) {
   sendMessageToLog('dbconnector message back, methodName: ' + data.data.methodName);
   if (data.data.hasOwnProperty('callBackMethodName')) {
-    if (options.hasOwnProperty('serviceCallBackHandler')) {
+    if (roomsOptions.hasOwnProperty('serviceCallBackHandler')) {
       // method handled by a callback method
-      options.serviceCallBackHandler(data);
+      roomsOptions.serviceCallBackHandler(data);
     } else {
       // method set on global
       window[data.data.callBackMethodName](data);
@@ -150,8 +151,8 @@ Rooms.prototype[messageTypes.MESSAGE] = function (data) {
 
 Rooms.prototype[messageTypes.REQUEST_NUM_OF_USERS] = function (data) {
   sendMessageToLog('numberOfUsersInRoom message: ' + data.size);
-  if (options.numOfUsersInARoomCallBackFunction != null) {
-    options.numOfUsersInARoomCallBackFunction(data);
+  if (roomsOptions.numOfUsersInARoomCallBackFunction != null) {
+    roomsOptions.numOfUsersInARoomCallBackFunction(data);
   }
 }
 
@@ -162,7 +163,7 @@ Rooms.prototype[messageTypes.GET_STATE] = function (data) {
 
 Rooms.prototype[messageTypes.STATE_CHANGE] = function (data) {
   sendMessageToLog('get state change: ' + data.name);
-  options.stateChangeCallBackFunction(data.vo);
+  roomsOptions.stateChangeCallBackFunction(data.vo);
 }
 
 Rooms.makeid = function (numOfChar) {
@@ -185,7 +186,7 @@ Rooms.prototype.sendMessage = function (message, data) {
 
 if (typeof exports != 'undefined' ) {
   exports.transporter = transporter;
-  exports.options = options;
+  exports.roomsOptions = roomsOptions;
   exports.CONNECTION = CONNECTION;
   exports.CONNECT = messageTypes.CONNECT;
   exports.MESSAGE = messageTypes.MESSAGE;
