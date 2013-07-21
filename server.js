@@ -21,9 +21,9 @@ roomdb.setServices('services_sample/');
 
 // connect to different database/s if needed
 // Mysql:
-// roomdb.connectToDatabase('mysql', 'localhost', 'root', '');
+// roomdb.connectToDatabase('mysql', 'localhost', {user: 'root', password: ''});
 // MongoDB
-roomdb.connectToDatabase('mongoose', 'localhost', 'test', '');
+roomdb.connectToDatabase('mongodb', 'mongodb://localhost/test', {});
 
 // set rooms
 rooms = new rooms({

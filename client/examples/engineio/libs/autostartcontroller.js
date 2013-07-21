@@ -4,107 +4,101 @@
  * @author Elad Elrom <elad.ny...gmail.com>
  */
 
+'use strict';
+
 var isAutoConnect = false,
-    rooms,
-    userId,
-    roomName;
+  rooms,
+  userId,
+  roomName;
 
 function listenToUserActions() {
-    $("#getResultsButton").bind('click', function () {
-        rooms.callDbConnector(userId, 'getitems', 'messageFromRoomCallBackfunction');
-        rooms.callDbConnector(userId, 'getnames', 'messageFromRoomCallBackfunction');
-    });
+  $("#getResultsButton").bind('click', function () {
+    rooms.callDbConnector(userId, 'getitems', 'messageFromRoomCallBackfunction');
+    rooms.callDbConnector(userId, 'getnames', 'messageFromRoomCallBackfunction');
+  });
 }
 
 function connectToSocket() {
-    'use strict';
-    var hostName = window.location.hostname,
-        port,
-        roomSetup,
-        transporter,
-        connectURL;
+  var hostName = window.location.hostname,
+    port,
+    roomSetup,
+    transporter,
+    connectURL;
 
-    userId = Rooms.makeid(16);
-    roomName = window.location.href;
-    port = (hostName !== '0.0.0.0' && hostName !== 'localhost') ? '80' : '8081';
-    connectURL = 'http://' + hostName + ':' + port;
+  userId = Rooms.makeid(16);
+  roomName = window.location.href;
+  port = (hostName !== '0.0.0.0' && hostName !== 'localhost') ? '80' : '8081';
+  connectURL = 'http://' + hostName + ':' + port;
 
-    roomSetup = {
-        roomName : roomName,
-        subscriptions : {
-            RoomInfoVO : true
-        }
-    };
+  roomSetup = {
+    roomName : roomName,
+    subscriptions : {
+      RoomInfoVO : true
+    }
+  };
 
-    rooms = new Rooms({
-        roomSetup : roomSetup,
-        userConnectedCallBackFunction : userConnectedCallBackFunction,
-        userRegisteredCallBackFunction : userRegisteredCallBackFunction,
-        numOfUsersInARoomCallBackFunction : numOfUsersInARoomCallBackFunction,
-        stateChangeCallBackFunction : stateChangeCallBackFunction,
-        debugMode : true
-    });
+  rooms = new Rooms({
+    roomSetup : roomSetup,
+    userConnectedCallBackFunction : userConnectedCallBackFunction,
+    userRegisteredCallBackFunction : userRegisteredCallBackFunction,
+    numOfUsersInARoomCallBackFunction : numOfUsersInARoomCallBackFunction,
+    stateChangeCallBackFunction : stateChangeCallBackFunction,
+    debugMode : true
+  });
 
-    transporter = new eio.Socket('ws://localhost/');
-    rooms.start({
-        transporter : transporter,
-        type : 'engine.io'
-    });
+  transporter = new eio.Socket('ws://localhost/');
+  rooms.start({
+    transporter : transporter,
+    type : 'engine.io'
+  });
 }
 
 function stateChangeCallBackFunction(data) {
-    'use strict';
-    // impl
+  // impl
 }
 
 function userConnectedCallBackFunction() {
-    'use strict';
-    if (isAutoConnect) {
-        rooms.registerUser(userId);
-    }
+  if (isAutoConnect) {
+    rooms.registerUser(userId);
+  }
 }
 
 function userRegisteredCallBackFunction() {
-    'use strict';
-    rooms.getNumberOfRegisteredUsersInRoom(userId);
+  rooms.getNumberOfRegisteredUsersInRoom(userId);
 }
 
 function numOfUsersInARoomCallBackFunction(data) {
-    'use strict';
-    var numofppl = data.size;
-    document.getElementById('visitors').innerHTML = '<div style="font-size: 15px; top: 5px">Currently there are <b>'+numofppl+'</b> visitors on this page</div>';
+  var numofppl = data.size;
+  document.getElementById('visitors').innerHTML = '<div style="font-size: 15px; top: 5px">Currently there are <b>'+numofppl+'</b> visitors on this page</div>';
 
-    if (data.hasOwnProperty('register')) {
-        sendMessageToLog('register userId: ' + data.register);
-    } else if (data.hasOwnProperty('disconnect')) {
-        sendMessageToLog('disconnect userId: ' + data.disconnect);
-    }
+  if (data.hasOwnProperty('register')) {
+    sendMessageToLog('register userId: ' + data.register);
+  } else if (data.hasOwnProperty('disconnect')) {
+    sendMessageToLog('disconnect userId: ' + data.disconnect);
+  }
 }
 
 function messageFromRoomCallBackfunction(data) {
-    'use strict';
-    sendMessageToLog('messageFromRoomCallBackfunction');
-    sendMessageToLog(JSON.stringify(data.vo));
+  sendMessageToLog('messageFromRoomCallBackfunction');
+  sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function messageFromRoomCallBackfunction2(data) {
-    'use strict';
-    sendMessageToLog('messageFromRoomCallBackfunction2');
-    sendMessageToLog(JSON.stringify(data.vo));
+  sendMessageToLog('messageFromRoomCallBackfunction2');
+  sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function connectUser() {
-    'use strict';
-    isAutoConnect = true;
-    connectToSocket();
+  isAutoConnect = true;
+  connectToSocket();
 }
 
 if (typeof jQuery !== 'undefined') {
-    $(document).ready(function () {
-        'use strict';
-        connectUser();
-        listenToUserActions();
-    });
+  $(document).ready(function () {
+    'use strict';
+    connectUser();
+    listenToUserActions();
+  });
 } else {
-    sendMessageToLog('jQuery not loaded');
+  sendMessageToLog('jQuery not loaded');
 }
