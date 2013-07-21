@@ -4,10 +4,13 @@
  * @author Elad Elrom <elad.ny...gmail.com>
  */
 
+// exmaple of just sending a static data we created
+
+'use strict';
+
 function getnames(data, dbconnectorCallBackToRooms) {
-    'use strict';
-    var vo = ['Liam', 'Samuel', 'Noah'];
-    dbconnectorCallBackToRooms(data, vo);
+  var vo = ['Liam', 'Samuel', 'Noah'];
+  dbconnectorCallBackToRooms(data, vo);
 }
 
 module.exports.getnames = getnames;

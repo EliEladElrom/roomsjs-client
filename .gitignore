@@ -2,3 +2,4 @@
 node_modules/
 /.idea
 client/video/flash/_source/
+npm-debug.log
