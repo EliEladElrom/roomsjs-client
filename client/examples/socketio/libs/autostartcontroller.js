@@ -4,6 +4,8 @@
  * @author Elad Elrom <elad.ny...gmail.com>
  */
 
+'use strict';
+
 var isAutoConnect = false,
   rooms,
   userId,
@@ -17,7 +19,6 @@ function listenToUserActions() {
 }
 
 function connectToSocket() {
-  'use strict';
   var hostName = window.location.hostname,
     port,
     roomSetup,
@@ -54,24 +55,20 @@ function connectToSocket() {
 }
 
 function stateChangeCallBackFunction(data) {
-  'use strict';
   // impl
 }
 
 function userConnectedCallBackFunction() {
-  'use strict';
   if (isAutoConnect) {
       rooms.registerUser(userId);
   }
 }
 
 function userRegisteredCallBackFunction() {
-  'use strict';
   rooms.getNumberOfRegisteredUsersInRoom(userId);
 }
 
 function numOfUsersInARoomCallBackFunction(data) {
-  'use strict';
   var numofppl = data.size;
   document.getElementById('visitors').innerHTML = '<div style="font-size: 15px; top: 5px">Currently there are <b>'+numofppl+'</b> visitors on this page</div>';
 
@@ -83,26 +80,22 @@ function numOfUsersInARoomCallBackFunction(data) {
 }
 
 function messageFromRoomCallBackfunction(data) {
-  'use strict';
   sendMessageToLog('messageFromRoomCallBackfunction');
   sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function messageFromRoomCallBackfunction2(data) {
-  'use strict';
   sendMessageToLog('messageFromRoomCallBackfunction2');
   sendMessageToLog(JSON.stringify(data.vo));
 }
 
 function connectUser() {
-  'use strict';
   isAutoConnect = true;
   connectToSocket();
 }
 
 if (typeof jQuery !== 'undefined') {
   $(document).ready(function () {
-    'use strict';
     connectUser();
     listenToUserActions();
   });
@@ -111,7 +104,6 @@ if (typeof jQuery !== 'undefined') {
 }
 
 function serviceCall(serviceMethodName, retCallBackName, params) {
-  'use strict';
   console.log('Calling: ' + serviceMethodName);
   rooms.callDbConnector(userId, serviceMethodName, retCallBackName, params);
 }
