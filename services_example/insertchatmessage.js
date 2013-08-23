@@ -26,11 +26,11 @@ function insertchatmessage(data, dbconnectorCallBackToRooms) {
   }
 
   var chatMessage = new Chat({
-    chatMessage: data.chatMessage,
-    roomId: data.roomId,
-    gravatar: data.gravatar,
-    email: data.email,
-    userName: data.userName
+    chatMessage: data.params.chatMessage,
+    roomId: data.params.roomId,
+    gravatar: data.params.gravatar,
+    email: data.params.email,
+    userName: data.params.userName
   });
 
   chatMessage.save(function (err) {

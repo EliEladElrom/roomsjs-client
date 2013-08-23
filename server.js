@@ -17,7 +17,7 @@ var server = require('http').createServer(app).listen(port, function () {
 // var server = require('http').createServer(app).listen(port, '0.0.0.0');
 
 // services
-roomdb.setServices('services_sample/');
+roomdb.setServices('services_example/');
 
 // connect to different database/s if needed
 // Mysql:
@@ -29,7 +29,7 @@ roomdb.connectToDatabase('mongodb', 'mongodb://localhost/test', {});
 rooms = new rooms({
   isdebug : true,
   transporter : {
-    type: 'engine.io', /* options: engine.io|socket.io|sockjs */
+    type: 'socket.io', /* options: engine.io|socket.io|sockjs */
     server : server
   },
   roomdb : roomdb /* or null if db not needed */
