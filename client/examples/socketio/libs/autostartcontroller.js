@@ -11,8 +11,8 @@ var isAutoConnect = false,
 
 function listenToUserActions() {
   $("#getResultsButton").bind('click', function () {
-    serviceCall(userId, 'getitems', 'messageFromRoomCallBackfunction');
-    serviceCall(userId, 'getnames', 'messageFromRoomCallBackfunction');
+    serviceCall('getitems', 'messageFromRoomCallBackfunction');
+    serviceCall('getnames', 'messageFromRoomCallBackfunction');
   });
 }
 
