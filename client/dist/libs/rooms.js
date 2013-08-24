@@ -1,4 +1,11 @@
-// global
+/*
+ * Copyright 2013 Elad Elrom, All Rights Reserved.
+ * Code licensed under the BSD License:
+ * @author Elad Elrom <elad.ny...gmail.com>
+ */
+
+'use strict';
+
 var roomsOptions,
   transporter;
 
@@ -9,7 +16,8 @@ var messageTypes = {
   REQUEST_NUM_OF_USERS : 'numberOfUsersInRoom',
   STATE_CHANGE : 'stateChange',
   GET_STATE : 'getState',
-  DBCONNECTOR : 'dbconnector'
+  DBCONNECTOR : 'dbconnector',
+  PRIVATE_MESSAGE: 'privmessage'
 };
 
 // messages out
@@ -23,12 +31,10 @@ var CONNECTION = 'connection',
   DISCONNECT = 'disconnect';
 
 function Rooms(options) {
-  'use strict';
   roomsOptions = options;
 }
 
-sendMessageToLog = function (msg) {
-  'use strict';
+var sendMessageToLog = function (msg) {
   if (roomsOptions.debugMode) {
     console.log(msg);
   }
@@ -77,6 +83,14 @@ Rooms.prototype.getState = function (userId, stateName) {
   };
 
   this.sendMessage(GET_STATE, data);
+}
+
+Rooms.prototype[messageTypes.PRIVATE_MESSAGE] = function (data) {
+  sendMessageToLog('receive private message');
+
+  if (roomsOptions.hasOwnProperty('privateMessageCallBack')) {
+    privateMessageCallBack(data);
+  }
 }
 
 Rooms.prototype.start = function (roomsOptions) {
