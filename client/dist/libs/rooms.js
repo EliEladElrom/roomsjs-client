@@ -124,14 +124,14 @@ Rooms.prototype.start = function (roomsOptions) {
   }
 }
 
-Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodName, params) {
+Rooms.prototype.callDbConnector = function (userId, methodName, callBackMethodName, query) {
 
   var data = {
     userId : userId,
     methodName : methodName,
     room : roomsOptions.roomSetup.roomName,
     callBackMethodName : callBackMethodName,
-    params : params
+    params : query
   };
 
   this.sendMessage('dbconnector',data);

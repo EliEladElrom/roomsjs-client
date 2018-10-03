@@ -1,0 +1,28 @@
+<html>
+<head>
+  <script type="text/javascript" src="js/libs/jquery.min.js"></script>
+  <script type="text/javascript" src="js/libs/jquery.browser.min.js"></script>
+  <script type="text/javascript" src="js/libs/engine.io.js"></script>
+  <script type="text/javascript" src="/js/enums/messagetype.js"></script>
+  <script type="text/javascript" src="/js/rooms.js"></script>
+  <script type="text/javascript" src="/js/autostartcontroller.js"></script>
+
+  <script lang="javascript">
+
+    // called automatically when roomsjs is ready
+    function applicationConnectedReady() {
+        // create a service 'services_example/read_data.js'
+        serviceCall('getitems', 'serviceCallbackRespond', {
+            userId: "1"
+        });
+    }
+
+    function serviceCallbackRespond(data) {
+      console.log(data.vo);
+    }
+  </script>
+
+<body>
+  <div id="visitors" />
+</body>
+</html>

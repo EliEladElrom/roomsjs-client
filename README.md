@@ -65,7 +65,7 @@ var os = require('os'),
 
 // create express server if needed
 var express = require('express'),
-  app = express().use(express.static(__dirname + '/client'));
+  app = express().use(express.static(__dirname + '/public'));
 
 // engine.io, socket.io
 var server = require('http').createServer(app).listen(port, function () {
@@ -94,7 +94,7 @@ rooms = new rooms({
 });
 </pre>
 
-Rooms.db services examples:
+roomsjs services examples:
 
 <pre>
 services_example/
@@ -116,6 +116,7 @@ client/
   |  |  |- socketio
   |  |  |- sockjs
   |  |  |- angular
+  |  |  |- express
 </pre>
 
 ## Docs:
@@ -125,7 +126,7 @@ Below is a ten thousand foot diagram that shows how the different pieces of the 
 ![backend diagram](https://raw.github.com/eladelrom/poet/ei-pages/effectiveidea/public/images/roomsjs-diagram1.png)
 <br><br>
 
-See more information here about init concept read here: [http://effectiveidea.com/_posts/roomsjs](http://effectiveidea.com/_posts/roomsjs)
+See more information see here: [https://www.apress.com/us/book/9781484220436](https://www.apress.com/us/book/9781484220436)
 <br><br>
 
 ## LICENSE
