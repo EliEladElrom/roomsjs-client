@@ -2,7 +2,7 @@
   "name": "roomsjs-client",
   "description": "roomsjs-client",
   "author": "Elad Elrom <elad.ny@gmail.com>",
-  "version": "0.1.2",
+  "version": "0.1.21",
   "dependencies": {
     "connect": "1.8.5",
     "express": "3.0.0rc5",

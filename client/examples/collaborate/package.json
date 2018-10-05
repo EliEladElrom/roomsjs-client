@@ -1,0 +1,28 @@
+{
+  "name": "collaborate",
+  "description": "collaborate",
+  "version": "0.0.1",
+  "homepage": "",
+  "author": {
+    "name": "Elad (Eli) Elrom",
+    "email": "elad.ny@gmail.com",
+    "twitter": "eliblockchain"
+  },
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "express": "latest",
+    "level": "^4.0.0",
+    "moment": "^2.20.1",
+    "rooms.db": "latest",
+    "roomsjs": "latest"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.6"
+  },
+  "engines": {
+    "node": ">=10.10.0"
+  },
+  "preferGlobal": "true"
+}

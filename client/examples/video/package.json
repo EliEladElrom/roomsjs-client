@@ -1,0 +1,27 @@
+{
+  "name": "Express example",
+  "description": "Express example",
+  "version": "0.0.1",
+  "homepage": "",
+  "author": {
+    "name": "Elad (Eli) Elrom",
+    "email": "elad.ny@gmail.com",
+    "twitter": "eliblockchain"
+  },
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "level": "^4.0.0",
+    "rooms.db": "latest",
+    "roomsjs": "latest",
+    "ws": "latest"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.6"
+  },
+  "engines": {
+    "node": ">=10.10.0"
+  },
+  "preferGlobal": "true"
+}

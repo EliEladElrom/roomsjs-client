@@ -1,0 +1,37 @@
+<!-- http://localhost:8081/collaborate.html -->
+<html>
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/libs/engine.io.js"></script>
+  <script type="text/javascript" src="/js/enums/messagetype.js"></script>
+  <script type="text/javascript" src="/js/rooms.js"></script>
+  <script type="text/javascript" src="/js/controller.js"></script>
+  <script type="text/javascript" src="/js/model/vo/clientvo.js"></script>
+
+  <script lang="javascript">
+      function applicationConnectedReady() {
+          serviceCall('getBlock', 'serviceCallbackRespond', {
+              key: "name"
+          });
+      }
+
+      function serviceCallbackRespond (data) {
+          console.log(data.vo);
+      }
+
+  </script>
+
+<body>
+  <div id="visitors"></div>
+  <div style="padding-top: 100px; width: 100px; height: 100px;">
+    <button type="button" id="numOfRegisteredUsersButton">numOfRegisteredUsersButton</button>
+    <button type="button" id="grabAllPodsButton">grabAllPodsButton</button>
+
+    <div class="well">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgB8MVNbA8Px_hjiSfKagnXT4CIZ2EK2agsj6ClZig8CF6J_1ukg" />
+    </div>
+  </div>
+</body>
+</html>
